@@ -1,0 +1,116 @@
+<!DOCTYPE html><html lang="en-GB"><head><meta charset="utf-8"><title>Layer 4 &middot; Capture</title><style>
+  @page { size: A4; margin: 0; }
+  * { margin:0; padding:0; box-sizing:border-box; }
+  :root { --paper:#F3EEE3; --vellum:#E7DEC9; --ink:#14110C; --ox:#6E1A18; --brass:#B08A3E; }
+  body { font-family: Constantia, Georgia, serif; color:var(--ink); background:var(--paper); }
+  .page { width:210mm; height:296mm; padding:20mm 22mm; background:var(--paper);
+          page-break-after:always; position:relative; overflow:hidden; }
+  .page:last-child { page-break-after:auto; }
+  .mono { font-family: Consolas,"Courier New",monospace; letter-spacing:.16em; text-transform:uppercase; }
+  .label { font-size:8.5pt; color:var(--brass); margin-bottom:3mm; }
+  h1 { font-size:34pt; font-weight:bold; line-height:1.1; }
+  h2 { font-size:19pt; font-weight:bold; margin-bottom:3mm; line-height:1.18; }
+  h3 { font-family:Consolas,monospace; font-size:8pt; letter-spacing:.16em; text-transform:uppercase;
+       color:var(--brass); margin:6mm 0 1.5mm 0; }
+  .deck { font-size:11pt; line-height:1.45; color:var(--ox); margin-bottom:5mm; }
+  p { font-size:10.5pt; line-height:1.5; margin-bottom:3mm; }
+  li { font-size:10.5pt; line-height:1.5; margin-bottom:1.5mm; margin-left:5mm; }
+  .two { display:flex; gap:8mm; margin-top:4mm; }
+  .two > div { flex:1; }
+  figure { margin:5mm 0; }
+  .cap { font-family:Consolas,monospace; font-size:7pt; letter-spacing:.1em; text-transform:uppercase;
+         color:var(--brass); text-align:center; margin-top:2mm; }
+  .box { border-left:2mm solid var(--ox); background:var(--vellum); padding:3.5mm 4.5mm; margin-top:5mm; }
+  .box .mono { font-size:7.5pt; color:var(--ox); display:block; margin-bottom:1.2mm; }
+  .box p { margin:0; }
+  .cmd { font-family:Consolas,monospace; font-size:9.5pt; background:var(--ink); color:var(--paper);
+         padding:3mm 4mm; margin:3mm 0; line-height:1.6; }
+  .footer { position:absolute; bottom:10mm; left:22mm; right:22mm; display:flex;
+            justify-content:space-between; font-size:7pt; color:var(--brass); }
+  .pgno { font-family:Consolas,monospace; font-size:7pt; letter-spacing:.1em; color:var(--brass); }
+  .pos { position:absolute; top:19mm; right:22mm; width:48mm; }
+  .rule { border:none; border-top:.3mm solid var(--ink); opacity:.25; margin:5mm 0; }
+  .cover { display:flex; flex-direction:column; justify-content:space-between; text-align:center; padding-top:44mm; }
+  .cover .word { font-size:24pt; font-weight:bold; letter-spacing:.3em; margin-top:9mm; }
+  .cover h1 { margin-top:14mm; }
+  .cover .sub { font-size:12pt; color:var(--ox); margin-top:5mm; line-height:1.5; }
+  table { width:100%; border-collapse:collapse; margin-top:3mm; }
+  th { font-family:Consolas,monospace; font-size:7.5pt; letter-spacing:.14em; text-transform:uppercase;
+       color:var(--brass); text-align:left; padding:1.8mm 2mm; border-bottom:.4mm solid var(--ink); }
+  /* Table padding is load-bearing on page 5, which carries the glossary and is the longest page
+     in every guide. The page is a fixed 296mm with overflow:hidden -- content past the bottom is
+     DELETED, not reflowed -- and Layer 8 was overflowing it. Anything that adds vertical space
+     here can silently cost a reader the last row of the glossary, so re-run
+     check_guide_overflow.py after touching this rule. */
+  td { font-size:9.5pt; line-height:1.36; padding:1.7mm 2mm; border-bottom:.2mm solid rgba(20,17,12,.2); vertical-align:top; }
+  td.k { width:38mm; font-weight:bold; }
+  text { font-family:Consolas,"Courier New",monospace; }
+  .t  { font-size:9.2px; letter-spacing:.05em; fill:#14110C; }
+  .tb { font-size:9.2px; letter-spacing:.12em; fill:#B08A3E; }
+  .tx { font-size:9.2px; letter-spacing:.05em; fill:#6E1A18; }
+  .ts { font-size:8px;   letter-spacing:.05em; fill:#14110C; opacity:.8; }
+  .tw { font-size:9.2px; letter-spacing:.05em; fill:#F3EEE3; }
+  .tsw{ font-size:8px;   letter-spacing:.05em; fill:#F3EEE3; }
+  .tsb{ font-size:8px;   letter-spacing:.12em; fill:#B08A3E; }
+
+  .c { font-family:Consolas,monospace; font-size:7.6pt; white-space:nowrap; margin:0; line-height:1.35; overflow:hidden; }
+  .cmd { white-space:pre !important; overflow:hidden; padding:2.4mm 4mm; margin:2.4mm 0; line-height:1.5; }
+  .r { font-size:9pt; line-height:1.3; color:var(--ox); margin:0 0 1.5mm 0; }
+  .macrun p { font-size:9.6pt; line-height:1.4; margin-bottom:2mm; }
+  .macrun h3 { margin-top:4mm; }
+  .macrun .box p + p { margin-top:2mm; }
+  td { font-size:9.1pt; line-height:1.3; padding:1.4mm 2mm; }
+  p { font-size:10.3pt; line-height:1.46; margin-bottom:2.6mm; }
+  li { font-size:10.3pt; line-height:1.46; }
+  h3 { margin-top:5mm; }
+</style></head><body><div class="page cover"><div><svg width="132" height="132" viewBox="0 0 200 200" style="display:block;margin:0 auto"><circle cx="100" cy="100" r="90" fill="none" stroke="#14110C" stroke-width="3.15"/><circle cx="100" cy="100" r="50.4" fill="none" stroke="#14110C" stroke-width="18"/><circle cx="162.51" cy="35.26" r="10.35" fill="#6E1A18"/></svg><div class="word mono">Outliers</div><h1>Capture</h1><div class="sub">Layer 4 of 8 &nbsp;&middot;&nbsp; Where the typing stops,<br>and the system starts filling itself.</div><div class="mono" style="font-size:10pt;letter-spacing:.3em;color:#F3EEE3;background:#6E1A18;display:inline-block;padding:2mm 6mm;margin-top:8mm">For Mac</div></div><div style="margin-bottom:15mm"><div class="mono" style="font-size:8.5pt;color:#B08A3E">Est. MMXXVI &nbsp;&middot;&nbsp; Outliers Accelerator</div></div></div><div class="page"><div class="label mono">Layer 4 &middot; Capture</div><div class="pos"><svg viewBox="0 0 152 20" width="100%"><rect x="0" y="0" width="16" height="7" fill="#C9BCA0" stroke="#14110C" stroke-width="0.4"/><rect x="19" y="0" width="16" height="7" fill="#C9BCA0" stroke="#14110C" stroke-width="0.4"/><rect x="38" y="0" width="16" height="7" fill="#C9BCA0" stroke="#14110C" stroke-width="0.4"/><rect x="57" y="0" width="16" height="7" fill="#14110C" stroke="#14110C" stroke-width="0.4"/><rect x="76" y="0" width="16" height="7" fill="#E7DEC9" stroke="#14110C" stroke-width="0.4"/><rect x="95" y="0" width="16" height="7" fill="#E7DEC9" stroke="#14110C" stroke-width="0.4"/><rect x="114" y="0" width="16" height="7" fill="#E7DEC9" stroke="#14110C" stroke-width="0.4"/><rect x="133" y="0" width="16" height="7" fill="#E7DEC9" stroke="#14110C" stroke-width="0.4"/><text x="0" y="17" style="font-size:6px;letter-spacing:.14em;fill:#B08A3E">LAYER 4</text></svg></div><h2>It fills itself</h2><div class="deck">Everything so far has been groundwork. This is the layer where your CRM starts keeping a history you did not type.</div><h3>What the last layer left you with</h3><p>You have a place to record what happened and rules for working out everything else from it. What you do not have is anything putting the history in, which leaves you typing, which is what kills CRMs.</p><h3>What this layer builds</h3><p>Small programs that read an export from a place your conversations already happen and turn every row of it into history. You run one command against the file, and nothing is typed. Running the same export again adds nothing twice, so you can drop a newer one on top whenever you like.</p><figure><svg viewBox="0 0 560 186" width="100%"><defs><marker id="a4" markerWidth="7" markerHeight="7" refX="6" refY="3.5" orient="auto"><path d="M0,0 L7,3.5 L0,7 z" fill="#6E1A18"/></marker></defs>
+      <text class="tb" x="16" y="16">PLACES YOU ALREADY TALK TO PEOPLE</text>
+      <g fill="#E7DEC9" stroke="#14110C" stroke-width="0.8">
+        <rect x="16" y="28" width="126" height="22"/><rect x="16" y="56" width="126" height="22"/>
+        <rect x="16" y="84" width="126" height="22"/><rect x="16" y="112" width="126" height="22"/>
+      </g>
+      <text class="ts" x="25" y="43">your messages</text>
+      <text class="ts" x="25" y="71">your calendar</text>
+      <text class="ts" x="25" y="99">calendar exports</text>
+      <text class="ts" x="25" y="127">contact exports</text>
+      <g stroke="#14110C" stroke-width="0.9" fill="none" opacity=".7">
+        <path d="M146 39 L206 84"/><path d="M146 67 L206 88"/>
+        <path d="M146 95 L206 92"/><path d="M146 123 L206 96"/>
+      </g>
+      <path d="M210 74 L258 94 L210 114 Z" fill="#6E1A18"/>
+      <text class="tb" x="204" y="132" fill="#6E1A18">WHO IS THIS?</text>
+      <text class="ts" x="196" y="148">the answer from Layer 2</text>
+      <path d="M262 94 L296 94" stroke="#6E1A18" stroke-width="1.3" fill="none" marker-end="url(#a4)"/>
+      <rect x="302" y="78" width="104" height="32" fill="#14110C"/>
+      <text class="tsw" x="313" y="98">YOUR HISTORY</text>
+      <line x1="424" y1="14" x2="424" y2="170" stroke="#14110C" stroke-width="0.3" opacity=".3"/>
+      <text class="tb" x="436" y="34">HOW OFTEN IT LOOKS AGAIN</text>
+      <text class="ts" x="436" y="56">people you are talking to</text>
+      <text class="ts" x="436" y="68">every time something happens</text>
+      <text class="ts" x="436" y="90">people who have gone quiet</text>
+      <text class="ts" x="436" y="102">once a month</text>
+      <text class="ts" x="436" y="124">everyone else</text>
+      <text class="ts" x="436" y="136">now and then</text>
+      <text class="tx" x="436" y="160">a reply jumps the queue</text>
+    </svg><div class="cap">Every source goes through the same question before anything is written down.</div></figure><div class="footer"><span class="mono">Layer 4 &middot; Capture</span><span class="pgno">2</span><span class="mono">Outliers</span></div></div><div class="page"><div class="label mono">Layer 4 &middot; How it works</div><h2>How it works</h2><div class="deck">Collecting the records is straightforward. Working out which person each one belongs to is not, and that is most of this layer.</div>
+      <h3>Working out who each record belongs to</h3>
+      <p>Getting a list of messages out of somewhere is straightforward. The difficulty is that the
+      same human turns up as a profile in one place, an email address in another, and a first name
+      on a meeting invitation in a third, while 2 different people share a name.</p>
+      <p>So everything a collector finds goes through the same question first, using the answer you
+      built in Layer 2: <strong>who is this?</strong> Nothing is written down until that is settled.
+      A record filed against the wrong person corrupts every calculation above it, and
+      silently, which makes it far worse than a record not filed at all.</p>
+      <p>When your system cannot tell who something belongs to, it records it anyway and
+      marks it unattributed. Throwing it away would leave the history looking complete when it is not.</p>
+      <h3>Not everything needs looking at as often</h3>
+      <p>You cannot re-check everything constantly, and checking nothing lets the whole CRM go
+      stale. So contacts sit in 3 groups. People you are actively talking to are refreshed
+      whenever something happens, which costs nothing extra. Warm contacts get looked at
+      occasionally. Everyone else, rarely.</p>
+      <p>Anything that actually happens overrides that schedule: a reply is picked up straight
+      away rather than waiting its turn.</p>
+      <h3>Nothing here uses AI</h3>
+      <p>These are small, boring programs that do the same job every time and can be tested by
+      giving them a known input and checking the output. That is deliberate. You want the programs that decide what is true in your system to be predictable. Judgement arrives in the next layer,
+      on top of this, where you can see it and check it.</p><div class="footer"><span class="mono">Layer 4 &middot; Capture</span><span class="pgno">3</span><span class="mono">Outliers</span></div></div><div class="page"><div class="label mono">Layer 4 &middot; Before you start</div><h2>Before you start on a Mac</h2><p>Everything in this guide is typed into <strong>Terminal</strong>, the Mac's window for typing commands instead of clicking. Press Command and Space together, type Terminal, and press Return.</p><p>This layer needs Python and git, which you set up for Layer 1 (its page "Before you start on a Mac"), and the layers before this one. It installs no add-ons, so it works with either Python a Mac may have.</p><h3>How to type the lines</h3><p>Where this guide shows several lines in a black box, type them one at a time: type the first, press Return, wait for it to finish and give you a fresh line, then type the next. The installer asks you questions. Each offers an answer in [square brackets]; press Return to take it, or type your own and press Return.</p><h3>Where your CRM is</h3><p>Layer 1 made your CRM at <strong>~/CRM</strong>: a folder called CRM in your home folder (the folder with your name and the house picture in Finder's sidebar). If you chose another folder in Layer 1, put your own folder wherever a line in this guide says ~/CRM. The installer finds your CRM by itself either way.</p><p><strong>Apple Silicon or Intel</strong> (the 2 kinds of chip a Mac can have; the Apple menu, then About This Mac, shows yours): the steps are the same on both, and both were tested.</p><p><strong>Tried only on test Macs.</strong> Mac test for this version not yet recorded.</p><div class="footer"><span class="mono">Layer 4 &middot; Capture</span><span class="pgno">4</span><span class="mono">Outliers</span></div></div><div class="page"><div class="label mono">Layer 4 &middot; Install</div><h2>Build it</h2><div class="deck">3 lines, typed into Terminal. The last one asks you a few questions so what you get is yours, then does the work.</div><div class="cmd">git clone https://github.com/OUTLIERS-ai/outliers-crm-04-capture-mac<br>cd outliers-crm-04-capture-mac<br>python3 install.py</div><p>This layer needs Layers 1 to 3. It checks first and tells you if anything is missing.</p><h3>What it asks you, and why</h3><table><tr><th style="width:52mm">Question</th><th>What it changes</th></tr><tr><td class="k">Where do your conversations actually happen?</td><td>Messages, email, calls, meetings, a community. Pick the ones that matter; you can add more later.</td></tr><tr><td class="k">Which of those can you export or connect?</td><td>Most platforms let you download your own data. The installer walks you through the ones you pick, and skips anything you cannot get at yet.</td></tr></table><h3>What you end up with</h3><ul><li>A collector for each source you connected, each writing into your one history.</li><li>Every incoming item passed through the same identity check before it is filed.</li><li>A refresh schedule so your records are re-checked in proportion to how much they matter.</li></ul><div class="footer"><span class="mono">Layer 4 &middot; Install</span><span class="pgno">5</span><span class="mono">Outliers</span></div></div><div class="page"><div class="label mono">Layer 4 &middot; Finishing</div><h2>Now use it</h2><div class="deck">Connect one source, and read a history you did not type.</div><p>Connect one source. Just one, the easiest one you have.</p><p>Then open the record of someone you have not thought about in a while and read their history. Depending which source you chose, you may find exchanges you had forgotten and meetings you had lost track of. The system records that something happened and when, not what was said in them.</p><p>Nobody typed any of it. That is what the first 3 layers were for.</p><h3>If you already had something like this</h3><p>Your test: pick a person and count how many separate places their history currently lives. If the answer is more than one, you have several partial records of the same relationship and no single view of it. That is what this layer removes.</p><hr class="rule"><h3>What this layer leaves unsolved</h3><p>Your system can now tell you what happened. It cannot tell you what any of it means. Whether this person is worth an hour of your week, whether a reply is warm or merely polite, and what to say back are all judgements, and a small program cannot make them.</p><div class="box"><span class="mono">Next: Layer 5 &middot; Judgement</span><p>Assistants that read, score and draft, each with one job, each showing where every fact it writes down came from.</p></div><h3>Words used in this guide</h3><table><tr><td class="k">Collector</td><td>A small program that watches one source and records what happens there.</td></tr><tr><td class="k">Attribution</td><td>Deciding which person something belongs to.</td></tr><tr><td class="k">Unattributed</td><td>Something recorded that the system could not confidently assign to anyone.</td></tr><tr><td class="k">Refresh</td><td>Looking again at details that may have changed, such as a job title.</td></tr></table><div class="footer"><span class="mono">Layer 4 &middot; Capture</span><span class="pgno">6</span><span class="mono">Outliers</span></div></div><div class="page"><div class="label mono">Layer 4 &middot; What was run on a Mac</div><div class="macrun"><h2>What was run on a Mac</h2><p>A <b>test Mac</b> is one of the Macs GitHub rents out by the minute to run a script.</p><p>Mac test for this version not yet recorded.</p><div class="box"><span class="mono">NOT RUN ON THE TEST MACS</span><p>The box asking to install the developer tools cannot appear on a test Mac, because GitHub's Macs already have them.</p><p>Opening your CRM in Obsidian. The test Macs have no Obsidian; the script read the folders and files the installer made instead.</p></div></div><div class="footer"><span class="mono">Layer 4 &middot; Capture</span><span class="pgno">7</span><span class="mono">Outliers</span></div></div></body></html>

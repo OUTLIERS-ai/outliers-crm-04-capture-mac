@@ -1,0 +1,103 @@
+{
+  "main": "outliers-crm-04-capture",
+  "main_commit": "79cb0a120a1e594092dec436d7f2234031b786a3",
+  "mac": "outliers-crm-04-capture-mac",
+  "macgen_commit": "50a7935",
+  "date": "2026-09-26",
+  "fingerprint": "6ce4b49f80adf6e80dec3e7d0eb0e0c60bf71fa6f8e50ae9325d6277987878d8",
+  "left_out_of_fingerprint": [
+    ".mac-version.json",
+    "guide/Layer-4-Capture (Mac).pdf",
+    "guide/Layer-4-Capture.html"
+  ],
+  "files": [
+    {
+      "path": ".gitignore",
+      "category": "same",
+      "sha256": "271540188ae129e9d99d3a8ad965db71df8c7cd7abfacb3580f60a5b61de5c1a"
+    },
+    {
+      "path": "README.md",
+      "category": "changed",
+      "sha256": "f26fb5f16ce1c851c9b54bf95137936c68d924f51909079d8a099fde276d79f8"
+    },
+    {
+      "path": "WHAT-I-STOLE.md",
+      "category": "same",
+      "sha256": "350d673e568207e7c1eceaf8b2f431cbf6bc2aca023c044f91b29e3f129e09c7"
+    },
+    {
+      "path": "crm/_schema/person.json",
+      "category": "same",
+      "sha256": "3611032340278fb76949cf91e49510f1f5caa558b58de7748f509d55b28f7bc8"
+    },
+    {
+      "path": "crm/collect.py",
+      "category": "same",
+      "sha256": "a25aaa04c1812ffd3890f6446fab9fc5837c5043fe8bd7ba4e80d80fca3b9645"
+    },
+    {
+      "path": "crm/derive.py",
+      "category": "same",
+      "sha256": "33c818b1017c4ae3345a1a508003fcf8c92d067db5d83a5ce8cb40d250f7f0e8"
+    },
+    {
+      "path": "crm/identity.py",
+      "category": "same",
+      "sha256": "80c08f3dc62a8af792f1e1d80f420f0f60fa96e1cde64abcc394c21990c30b35"
+    },
+    {
+      "path": "crm/ledger.py",
+      "category": "same",
+      "sha256": "295cfd642f538764405761131ac6230254c33e210d40f05f9338b315d24c19f0"
+    },
+    {
+      "path": "crm/refresh.py",
+      "category": "same",
+      "sha256": "810ec465bb8444f0c377b8b6f2325f0f8b3119f984327fe251bf0855a2bc8683"
+    },
+    {
+      "path": "crm/safe_write.py",
+      "category": "same",
+      "sha256": "a2ae5a58604b2c61c947995a8b88fa1517c882670841c4bb05df6c96dee57335"
+    },
+    {
+      "path": "crm/schema.py",
+      "category": "same",
+      "sha256": "7a6f89fd7e5d6a3cad95a2a0b15597b18f23f8e90e5bdd150a912c4bd02a244f"
+    },
+    {
+      "path": "crm/settings.py",
+      "category": "same",
+      "sha256": "bfccd7d2c3ab7cb6ce13943bedb181bd96923ab44c770c3f1930670bbf7148f5"
+    },
+    {
+      "path": "guide/Layer-4-Capture (Mac).pdf",
+      "category": "left out of the fingerprint"
+    },
+    {
+      "path": "guide/Layer-4-Capture.html",
+      "category": "left out of the fingerprint"
+    },
+    {
+      "path": "install.py",
+      "category": "same",
+      "sha256": "4fda0b4222b3229289f7b7340915ae8c779102a3376ea24af49923b43bd287e2"
+    },
+    {
+      "path": "tests/test_atomic_writes.py",
+      "category": "same",
+      "sha256": "758c0436a95601ffbe97b522a9d74f05f377f155e8610098c4dca5cd52121335"
+    },
+    {
+      "path": "tests/test_capture.py",
+      "category": "same",
+      "sha256": "bcd91420cb676a01695ab2e659bbddb0867e18e5d2b27966ec1459fdd838ddcf"
+    },
+    {
+      "path": "tests/test_refresh_tiers.py",
+      "category": "same",
+      "sha256": "1a08a15dfe5a59d8cd0321c8a10c7a93f98ceaf3d3b149c46347ac45a11cd069"
+    }
+  ]
+}

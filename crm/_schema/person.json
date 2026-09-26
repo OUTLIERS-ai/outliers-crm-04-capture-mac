@@ -1,0 +1,191 @@
+{
+  "_comment": [
+    "THE RECORD CONTRACT.",
+    "",
+    "This file is the shape of a person record, written down where a machine can",
+    "check it. It is data, not prose, because prose cannot be checked and a rule",
+    "nothing checks is not followed.",
+    "",
+    "You own this file. Code reads it and never edits it: anything that can widen its",
+    "own contract has no contract. Adding a field means adding it here first.",
+    "",
+    "RULE: a field belongs here only if something READS it. A field that is captured",
+    "and never read is work you do forever for no return, and it is how a record shape",
+    "quietly doubles in size. If nothing reads a field, take it out rather than keep it",
+    "in case."
+  ],
+  "version": "1.0.0",
+  "updated": "2026-08-05",
+
+  "identity": {
+    "_comment": [
+      "One key per person. A name is not a key: names repeat, they change, and they",
+      "pick up decoration (a status symbol, a middle initial, a company suffix). A",
+      "profile link, an email address or a phone number survives a name change and is",
+      "never handed to somebody else.",
+      "",
+      "Resolution order and alias handling live in identity.py, which is the single",
+      "implementation. Nothing else decides which person a record is."
+    ],
+    "canonical_key": "linkedin-url",
+    "required_on_write": false,
+    "fallback_key": "name",
+    "fallback_condition": "unique-in-your-records"
+  },
+
+  "required": {
+    "name": {
+      "type": "string",
+      "note": "The display name. It may carry decoration; identity.py strips decoration for comparison only, never for display."
+    },
+    "type": {
+      "type": "enum",
+      "values": ["person", "prospect", "contact"],
+      "note": "What kind of record this is."
+    },
+    "date": {
+      "type": "date",
+      "format": "YYYY-MM-DD"
+    },
+    "tags": {
+      "type": "list",
+      "must_include": ["crm"],
+      "note": "One tag every record shares, so a query can find all of them at once."
+    }
+  },
+
+  "identity_fields": {
+    "linkedin-url": {
+      "type": "url",
+      "pattern": "linkedin\\.com/in/",
+      "note": "Any spelling is accepted on read; identity.slug() normalises it."
+    },
+    "email": {
+      "type": "email"
+    },
+    "phone": {
+      "type": "phone",
+      "note": "Compared on the last nine digits, so country codes and spacing do not matter."
+    },
+    "aliases": {
+      "type": "list",
+      "note": "Every other name, handle, address or link you have seen for this person. People arrive as a profile, an email, a name on a meeting invite and a handle in a group. The alias list is how all four find the one record."
+    }
+  },
+
+  "state": {
+    "_comment": [
+      "ONE WORD PER THING. If two words mean the same state, sooner or later half the",
+      "records use one and half use the other, and a query for either returns half the",
+      "answer. Worse, the most common value can end up being a word no list recognises,",
+      "which makes that part of the system unreachable rather than merely untidy.",
+      "",
+      "legacy_map is the translation table for words you used before. It is applied on",
+      "read, so nothing has to be rewritten."
+    ],
+    "relationship-state": {
+      "type": "enum",
+      "values": [
+        "cold", "active", "warming", "parked",
+        "client", "past-client", "non-buyer", "suppressed", "personal"
+      ],
+      "derived_from": "the event log",
+      "hand_written": false,
+      "note": "Calculated from what happened, never typed. A field a person keeps up to date by hand is a field that starts lying within weeks.",
+      "legacy_map": {
+        "stranger": "cold",
+        "aware": "cold",
+        "prospect": "cold",
+        "connected": "cold",
+        "unknown": "cold",
+        "unclassified": "cold",
+        "nurturing": "warming",
+        "warm": "warming",
+        "engaged": "active",
+        "conversation": "active",
+        "qualified": "active",
+        "proposal": "active",
+        "won": "client",
+        "advocate": "client",
+        "dormant": "parked",
+        "friend": "personal",
+        "family": "personal",
+        "irrelevant": "suppressed"
+      },
+      "_note_personal": "personal means friend, family, or anyone you know outside work. Never contacted by anything automatic, never scored, never counted in a pipeline. It is a state rather than a folder so the exclusion is explicit."
+    }
+  },
+
+  "calculated": {
+    "_comment": "Worked out from the event log by the next layer. Anything that sets one of these by hand is writing a claim and calling it a fact, so the contract refuses it.",
+    "last-contact": {
+      "type": "date"
+    },
+    "next-contact-due": {
+      "type": "date"
+    },
+    "conversation-points": {
+      "type": "integer"
+    },
+    "refresh-tier": {
+      "type": "enum",
+      "values": ["active", "warm", "cold"],
+      "note": "How often this person's details get re-checked."
+    },
+    "last-verified": {
+      "type": "date",
+      "note": "When the details that go out of date (job title, company) were last confirmed against a source."
+    }
+  },
+
+  "scoring": {
+    "score": {
+      "type": "integer",
+      "range": [0, 100]
+    },
+    "score-rationale": {
+      "type": "string"
+    }
+  },
+
+  "provenance": {
+    "_comment": "Every fact written by something other than you carries where it came from and when. Accurate output and invented output are formatted identically, so the source is the only thing that tells them apart a week later.",
+    "required_on": ["score", "company", "role", "title"],
+    "shape": {
+      "value": "any",
+      "source": "string",
+      "established": "date",
+      "confidence": "enum[high,medium,low]"
+    },
+    "weak_evidence_action": "stage",
+    "note": "confidence: low goes to a review pile, never into the record as settled."
+  },
+
+  "prohibited": {
+    "_comment": "Absolute. Three prohibitions, short enough to remember and absolute enough never to argue with.",
+    "delete_person_record": "Never delete a person. Mark them non-buyer or personal, or park them. A deleted record takes its history with it, and the history is the asset.",
+    "special_category_data": "Never store anything about health, beliefs, politics, sexuality, race or biometrics on a person record. It is the most sensitive data there is, it is regulated nearly everywhere, and no CRM benefit is worth holding it.",
+    "automated_send": "Never let an automation speak as you. Nothing reaches a human being without your hand on it.",
+    "unread_fields": "A field nothing reads comes out of the contract rather than being carried.",
+    "truncating_write": "Never open an existing record for writing. Write a temporary file and swap it into place."
+  },
+
+  "field_aliases": {
+    "_comment": "Every spelling that has ever meant one canonical field. adapt() uses this so a record written to an older shape still reads correctly, without anything being rewritten on disk.",
+    "name": ["full-name", "fullname"],
+    "linkedin-url": ["linkedin", "linkedin_url", "profile-url", "profile"],
+    "email": ["email-address", "e-mail"],
+    "phone": ["telephone", "mobile", "phone-number"],
+    "aliases": ["also-known-as", "aka"],
+    "company": ["company-name", "organisation", "organization"],
+    "role": ["title", "headline", "position", "job-title"],
+    "score": ["lead-score", "fit-score"],
+    "last-contact": ["last-contacted", "last_contact"],
+    "relationship-state": ["pipeline-stage", "stage", "relationship-type", "status"]
+  },
+
+  "retired": {
+    "_comment": "Kept so that anyone meeting one of these in an old record knows it is dead, and so nothing reintroduces it.",
+    "pipeline-stage": "Superseded by relationship-state, which is calculated rather than typed. See state.relationship-state.legacy_map."
+  }
+}
